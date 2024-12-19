@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: TelegramBot
+    env: java
+    buildCommand: "mvn clean package"
+    startCommand: "java -jar target/telegramBot-1.0-SNAPSHOT.jar"
+    plan: free
