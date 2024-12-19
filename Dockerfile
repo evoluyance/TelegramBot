@@ -1,23 +1,26 @@
-# Використовуємо офіційний образ Maven для збирання проекту
+# Use Maven image for build stage
 FROM maven:3.8.5-openjdk-17 AS build
 
-# Встановлюємо робочу директорію
+# Set working directory inside the container
 WORKDIR /app
 
-# Копіюємо файли проекту у контейнер
+# Copy project files to container
 COPY . .
 
-# Виконуємо збирання проекту
+# Build the application and create the JAR
 RUN mvn clean package -DskipTests
 
-# Використовуємо офіційний образ OpenJDK для виконання програми
+# Use lightweight JDK image for running the application
 FROM openjdk:17-jdk-slim
 
-# Встановлюємо робочу директорію
+# Set working directory for the application
 WORKDIR /app
 
-# Копіюємо jar файл із попереднього етапу
+# Copy the JAR file from the build stage
 COPY --from=build /app/target/telegramBot-1.0-SNAPSHOT.jar app.jar
 
-# Визначаємо команду для запуску програми
+# Expose port (optional, depends on your bot architecture)
+EXPOSE 8080
+
+# Command to run the application
 CMD ["java", "-jar", "app.jar"]
