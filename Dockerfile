@@ -1,17 +1,23 @@
-# Використовуємо базовий образ з OpenJDK
-FROM openjdk:19-jdk
+# Використовуйте базовий образ Maven з Java
+FROM maven:3.8.5-openjdk-19 AS build
 
-# Встановлюємо Maven для збірки проекту
-RUN apt-get update && apt-get install -y maven
-
-# Вказуємо робочу директорію в контейнері
+# Встановлюємо робочу директорію
 WORKDIR /app
 
-# Копіюємо всі файли проекту до контейнера
+# Копіюємо всі файли в контейнер
 COPY . .
 
-# Збираємо JAR-файл
-RUN mvn clean package
+# Збираємо проект
+RUN mvn clean package -DskipTests
 
-# Команда для запуску бота
-CMD ["java", "-jar", "target/telegramBot-1.0-SNAPSHOT.jar"]
+# Використовуємо мінімальний образ для запуску
+FROM openjdk:19-jdk
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо зібраний JAR файл з попереднього кроку
+COPY --from=build /app/target/telegramBot-1.0-SNAPSHOT.jar app.jar
+
+# Команда для запуску програми
+CMD ["java", "-jar", "app.jar"]
