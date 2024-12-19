@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file built by Maven into the container
-COPY target/telegramBot-1.0-SNAPSHOT.jar telegramBot-1.0-SNAPSHOT.jar.original
+COPY telegramBot/target/telegramBot-1.0-SNAPSHOT.jar telegramBot-1.0-SNAPSHOT.jar.original
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
