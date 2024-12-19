@@ -2,6 +2,6 @@ services:
   - type: web
     name: TelegramBot
     env: java
-    buildCommand: "mvn clean package"
+    buildCommand: "apt-get update && apt-get install -y openjdk-19-jdk maven && mvn clean package"
     startCommand: "java -jar target/telegramBot-1.0-SNAPSHOT.jar"
     plan: free
