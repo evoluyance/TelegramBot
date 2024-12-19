@@ -1,5 +1,5 @@
-# Використовуйте базовий образ Maven з Java
-FROM maven:3.8.5-openjdk-19 AS build
+# Використовуємо базовий образ Maven із JDK 17
+FROM maven:3.8.5-openjdk-17 AS build
 
 # Встановлюємо робочу директорію
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Використовуємо мінімальний образ для запуску
-FROM openjdk:19-jdk
+FROM openjdk:17-jdk
 
 # Встановлюємо робочу директорію
 WORKDIR /app
